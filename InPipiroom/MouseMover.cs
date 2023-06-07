@@ -10,6 +10,7 @@ namespace OnPipiroom
 
         private uint ScreenResolutionWidth = 0;
         private uint ScreenResolutionHeight = 0;
+        private readonly uint WindowsTaskBarTall = 72; // Most tall in Pixels
 
         [Flags]
         public enum MouseEventFlags
@@ -86,8 +87,8 @@ namespace OnPipiroom
                         int x = random.Next((int)ScreenResolutionWidth);
                         int y = random.Next((int)ScreenResolutionHeight);
                         SetCursorPos(x, y);
-                        if (random.Next(10) == 5)
-                        { if (y > 30 && y < (ScreenResolutionHeight - 30)) { LeftClick(new Point(x, y)); } }
+                        if (random.Next(10) == 5 && (y > WindowsTaskBarTall && y < (ScreenResolutionHeight - WindowsTaskBarTall)))
+                        { LeftClick(new Point(x, y)); }
                     }
                     int randomNumber = randomMin.Next(500, 5000);
                     await Task.Delay(randomNumber, stoppingToken);
