@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-InPipiroom-ebb356a7-f8f0-4c04-8cd9-c91e28d83c1e</UserSecretsId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>kisspng-c-programming-language-logo-microsoft-visual-stud-atlas-portfolio-5b899192d7c600.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="kisspng-c-programming-language-logo-microsoft-visual-stud-atlas-portfolio-5b899192d7c600.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="MouseKeyHook" Version="5.7.1" />
+    <PackageReference Include="System.Management" Version="7.0.1" />
+  </ItemGroup>
+</Project>
