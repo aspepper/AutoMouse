@@ -8,7 +8,6 @@ namespace OnPipiroom
 {
     public class MouseMover : BackgroundService
     {
-
         private uint ScreenResolutionWidth = 0;
         private uint ScreenResolutionHeight = 0;
         private readonly uint WindowsTaskBarTall = 72; // Most tall in Pixels
@@ -102,6 +101,7 @@ namespace OnPipiroom
                 SetCursorPos(x, y);
 
                 Thread.Sleep(speed);
+                if ((DateTime.Now - GetLastInputTime()).TotalMilliseconds < 100) { break; }
 
                 currentX += stepX;
                 currentY += stepY;
@@ -112,7 +112,6 @@ namespace OnPipiroom
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             Random speed = new();
             Random rndTime = new();
             Random randomMin = new();
@@ -121,10 +120,11 @@ namespace OnPipiroom
 
             while (!stoppingToken.IsCancellationRequested)
             {
+                DateTime lastInteration = GetLastInputTime();
                 var currentTime = DateTime.Now;
                 if (currentTime.Hour >= 8 && currentTime.Hour <= 20)
                 {
-                    if ((DateTime.Now - GetLastInputTime()).TotalSeconds >= toWait)
+                    if ((currentTime - lastInteration).TotalSeconds >= toWait)
                     {
                         toWait = rndTime.Next(5, 15);
                         int x = random.Next((int)ScreenResolutionWidth);
@@ -135,7 +135,7 @@ namespace OnPipiroom
                     }
                     else
                     {
-                        Console.Write($"Tempo não passou ainda, ultimo movimento {GetLastInputTime()}, send que se passaram {(DateTime.Now - GetLastInputTime()).TotalSeconds}, e a espera é de {toWait}.");
+                        Console.Write($"Tempo não passou ainda, ultimo movimento {lastInteration}, send que se passaram {(currentTime - lastInteration).TotalSeconds}, e a espera é de {toWait}.");
                     }
                     int randomNumber = randomMin.Next(500, 5000);
                     Console.WriteLine($" Aguardando {randomNumber} Milisegundos.");
