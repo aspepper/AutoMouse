@@ -129,13 +129,23 @@ namespace TestCorp
             Random rndTime = new();
             Random randomMin = new();
             Random random = new();
+            Random timeLater = new();
             int toWait = rndTime.Next(5, 15);
 
+            DateTime timeBegin = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 30, 0)).AddMinutes(timeLater.Next(15, 40));
+            DateTime timeToEnd = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 30, 0)).AddMinutes(timeLater.Next(20, 40));
+            Console.WriteLine($"Hoje {timeBegin:dd/MM/yyyy} o inicio será às {timeBegin:HH:mm:ss} e o final às {timeToEnd:HH:mm:ss}");
             while (!stoppingToken.IsCancellationRequested)
             {
                 DateTime lastInteration = GetLastInputTime();
                 var currentTime = DateTime.Now;
-                if (currentTime.Hour >= 8 && currentTime.Hour <= 20)
+                if(currentTime.Day != timeBegin.Day)
+                { 
+                    timeBegin = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 30, 0)).AddMinutes(timeLater.Next(15, 40));
+                    timeToEnd = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 30, 0)).AddMinutes(timeLater.Next(20, 40));
+                    Console.WriteLine($"Hoje {timeBegin:dd/MM/yyyy} o inicio será às {timeBegin:HH:mm:ss} e o final às {timeToEnd:HH:mm:ss}");
+                }
+                if (currentTime >= timeBegin && currentTime <= timeToEnd)
                 {
                     if ((currentTime - lastInteration).TotalSeconds >= toWait)
                     {
