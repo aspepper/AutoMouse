@@ -1,9 +1,10 @@
+using NonInvasiveKeyboardHookLibrary;
 using System.Drawing;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace OnPipiroom
+namespace TestCorp
 {
     public class MouseMover : BackgroundService
     {
@@ -11,6 +12,8 @@ namespace OnPipiroom
         private uint ScreenResolutionHeight = 0;
         private readonly uint WindowsTaskBarTall = 72; // Most tall in Pixels
         private Point CurrentMousePoint = new();
+        private bool IsClosed = false;
+        private readonly KeyboardHookManager keyboardHookManager = new();
 
         #region User32 Dynalic Link Library
 
@@ -53,6 +56,17 @@ namespace OnPipiroom
         public MouseMover()
         {
             GetScreenResolution();
+            keyboardHookManager.Start();
+            keyboardHookManager.RegisterHotkey(NonInvasiveKeyboardHookLibrary.ModifierKeys.Alt, (int)Keys.C, HotKeyPressed);
+        }
+
+        public override void Dispose()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Service Finished.");
+            keyboardHookManager.UnregisterAll();
+            keyboardHookManager.Stop();
+            base.Dispose();
         }
 
         void GetScreenResolution()
@@ -133,9 +147,7 @@ namespace OnPipiroom
                         { LeftClick(new Point(x, y)); Console.Write(" Clicou!"); }
                     }
                     else
-                    {
-                        Console.Write($"Tempo não passou ainda, ultimo movimento {lastInteration}, send que se passaram {(currentTime - lastInteration).TotalSeconds}, e a espera é de {toWait}.");
-                    }
+                    { Console.Write($"Tempo não passou ainda, ultimo movimento {lastInteration}, send que se passaram {Math.Round((currentTime - lastInteration).TotalSeconds)}, e a espera é de {toWait}."); }
                     int randomNumber = randomMin.Next(500, 5000);
                     Console.WriteLine($" Aguardando {randomNumber} Milisegundos.");
                     await Task.Delay(randomNumber, stoppingToken);
@@ -155,6 +167,13 @@ namespace OnPipiroom
             GetLastInputInfo(ref lastInputInfo);
 
             return DateTime.Now.AddMilliseconds(-(Environment.TickCount - lastInputInfo.dwTime));
+        }
+
+        void HotKeyPressed()
+        {
+            if (IsClosed) { IsClosed = false; }
+            else { IsClosed = true; }
+            Console.Write($" -IsClosed:{IsClosed}- ");
         }
 
     }

@@ -1,8 +1,4 @@
-using InPipiroom;
-using OnPipiroom;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using TestCorp;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
@@ -12,4 +8,4 @@ IHost host = Host.CreateDefaultBuilder(args)
     .Build();
 
 host.Run();
-//Application.Run(new ConsoleReceiver());
+

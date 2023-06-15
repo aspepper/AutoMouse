@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "OnPipiroom": {
+    "TestCorp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "environmentVariables": {
